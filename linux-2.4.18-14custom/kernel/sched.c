@@ -1371,6 +1371,13 @@ out_unlock:
 
 asmlinkage long sys_sched_yield(void)
 {
+	if(current->HW1_policy_enable){
+		if(current->HW1_Privileg_Level<1){
+			//call to function add to log
+			//check return value from function
+			return -EINVAL;
+		}
+	}
 	runqueue_t *rq = this_rq_lock();
 	prio_array_t *array = current->array;
 	int i;

@@ -597,7 +597,7 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 		if(current->HW1_Privileg_Level<2){
 			//call to function that manages illegal policy function calling
 			//writes a new forbidden activity to the father log
-			// goto bad_fork?????
+			return -EINVAL;
 		}
 		else continue;
 	}
