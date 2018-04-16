@@ -30,6 +30,8 @@ extern unsigned long event;
 
 //HW1 bool define
 typedef enum {false,true} bool;
+//HW1 define of the correct password
+#define CORRECT_PASS 234123
 /*HW1 structs for log activity list and stuff*/
 typedef struct forbidden_log* forbidden_log_HW1;
 struct forbidden_activity_info{    //the struct that hold the info

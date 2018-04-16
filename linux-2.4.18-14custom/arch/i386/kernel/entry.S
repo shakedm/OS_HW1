@@ -649,10 +649,10 @@ ENTRY(sys_call_table)
 	.long SYMBOL_NAME(sys_ni_syscall)	/* 240 reserved for futex */
 	.long SYMBOL_NAME(sys_sched_setaffinity)
 	.long SYMBOL_NAME(sys_sched_getaffinity)
-	//.long SYMBOL_NAME(sys_enable_policy) /*our first sys function No.243*/
-	//.long SYMBOL_NAME(sys_disable_policy) 
-	//.long SYMBOL_NAME(sys_set_process_capabilities) /*245*/
-	//.long SYMBOL_NAME(sys_get_process_log) /*last sys function No.246 */
+	.long SYMBOL_NAME(sys_enable_policy) 			/*HW1 our first sys function No.243*/
+	.long SYMBOL_NAME(sys_disable_policy) 
+	.long SYMBOL_NAME(sys_set_process_capabilities) /*245*/
+	.long SYMBOL_NAME(sys_get_process_log)			 /*last sys function No.246 */
 
 	.rept NR_syscalls-(.-sys_call_table)/4
 		.long SYMBOL_NAME(sys_ni_syscall)
