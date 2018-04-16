@@ -46,6 +46,23 @@ struct forbidden_log{
 };
 //end of HW1 structs
 
+// HW1 functions:
+int add_to_log(int sysCall_thres)
+{
+	forbidden_log_HW1 newNode=kmalloc(sizeof(*forbidden_log_HW1));
+	if (!newNode)
+	{
+		return -1;
+	}
+	newNode->data.syscall_req_level=sysCall_thres;
+	newNode->data.proc_level=current->HW1_Privileg_Level;
+	newNode->data.time=jiffies;
+	current->last_log->next=newNode;
+	newNode->prev=current->last_log;
+	current->last_log=newNode;
+	return 0;
+}
+//HW1 functions end
 struct exec_domain;
 
 /*
