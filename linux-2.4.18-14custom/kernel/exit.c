@@ -571,8 +571,8 @@ asmlinkage long sys_wait4(pid_t pid,unsigned int * stat_addr, int options, struc
 {
 	if(current->HW1_policy_enable){
 		if(current->HW1_Privileg_Level<1){
-			//call the add forbidden log function
-			//check the return value from log activity to return ENOMEM in case of kmalloc fail
+			if(add_to_log(1)<0)
+				return -ENOMEM;
 			return -EINVAL;
 		}
 	}

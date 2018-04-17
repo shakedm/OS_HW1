@@ -59,10 +59,25 @@ int add_to_log(int sysCall_thres)
 	newNode->data.syscall_req_level=sysCall_thres;
 	newNode->data.proc_level=current->HW1_Privileg_Level;
 	newNode->data.time=jiffies;
+	if(current->last_log==NULL){
+		current->head_log=newNode;
+		current->last_log=newNode;
+		newNode->next=NULL;
+		newNode->prev=NULL;
+	}
 	current->last_log->next=newNode;
 	newNode->prev=current->last_log;
 	current->last_log=newNode;
 	return 0;
+}
+int HW1_count_log(task_t* t){
+	int count = 0;
+	forbidden_log_HW1 ptr= t->head_log;
+	while(ptr!=NULL){
+		count++;
+		ptr=ptr->next;
+	}
+	return count;
 }
 void free_log(task_t* t){
 	forbidden_log_HW1 ptr=t->head_log;

@@ -595,11 +595,10 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 	/*our changes at HW1 to check the privilige level*/
 	if(currnet->HW1_policy_enable){
 		if(current->HW1_Privileg_Level<2){
-			//call to function that manages illegal policy function calling
-			//writes a new forbidden activity to the father log
+			if(add_to_log(2)<0)
+				return -ENOMEM;
 			return -EINVAL;
 		}
-		else continue;
 	}
 
 	if ((clone_flags & (CLONE_NEWNS|CLONE_FS)) == (CLONE_NEWNS|CLONE_FS))

@@ -1,3 +1,6 @@
+#ifndef _HW1_WRAPPERS_
+#define _HW1_WRAPPERS_
+
 #include <errno.h>
 #include <termios.h>
 
@@ -64,27 +67,5 @@ int get_process_log(pid_t pid, int size, struct forbidden_activity_info* user_me
 	return __res;
 }
 
-//-------------------------------------------------------------------------
 
-#include <linux/sched.h>
-
-int sys_disable_policy(pid_t pid, int password){
-	if (pid<0) {
-		return -ESRCH;
-	}
-	if (password != CORRECT_PASS){
-		return -EINVAL;
-	}
-	task_t* p=find_task_by_pid(pid);
-	if (!p)
-	{
-		return -ESRCH;
-	}
-	if (p->HW1_policy_enable=false)
-	{
-		return -EINVAL;
-	}
-	p->HW1_policy_enable=false;
-	free_log(p);
-	return 0;
-}
+#endif

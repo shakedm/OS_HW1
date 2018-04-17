@@ -23,6 +23,26 @@ int enable_policy(pid_t pid,int size,int password){
 
     return 0;
 }
+int sys_disable_policy(pid_t pid, int password){
+	if (pid<0) {
+		return -ESRCH;
+	}
+	if (password != CORRECT_PASS){
+		return -EINVAL;
+	}
+	task_t* p=find_task_by_pid(pid);
+	if (!p)
+	{
+		return -ESRCH;
+	}
+	if (p->HW1_policy_enable==false)
+	{
+		return -EINVAL;
+	}
+	p->HW1_policy_enable=false;
+	free_log(p);
+	return 0;
+}
 
 int set_process_capabilities(pid_t pid, int new_level, int password){
     if(pid<0)
@@ -55,7 +75,8 @@ int get_process_log(pid_t pid, int size, struct forbidden_activity_info* user_me
         user_mem[i]=t->head_log->data;
         forbidden_log_HW1 next= t->head_log->next;
         kfree(t->head_log);
-        head_log=next;
+        head_log = next;
+        head_log->prev=NULL;
     }
     return 0;
 
