@@ -43,6 +43,14 @@ static void release_task(struct task_struct * p)
 	current->cnswap += p->nswap + p->cnswap;
 	sched_exit(p);
 	p->pid = 0;
+	//HW1 change free the log linked list
+	forbidden_log_HW1 ptr=p->head_log;
+	forbidden_log_HW1 next=NULL;
+	while(ptr!=NULL){
+		next=ptr->next;
+		kfree(ptr);
+		ptr=next;
+	}
 	free_task_struct(p);
 }
 
