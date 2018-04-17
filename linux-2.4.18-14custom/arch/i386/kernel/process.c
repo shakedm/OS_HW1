@@ -811,7 +811,6 @@ asmlinkage int sys_execve(struct pt_regs regs)
 	error = do_execve(filename, (char **) regs.ecx, (char **) regs.edx, &regs);
 	if (error == 0)
 		current->ptrace &= ~PT_DTRACE;
-	printk("312140411 excute order 66 %s\n",filename);
 	putname(filename);
 out:
 	return error;

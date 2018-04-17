@@ -62,6 +62,9 @@ int sys_enable_policy(pid_t pid,int size,int password){
     if(t==NULL)
         return -ESRCH;
 
+    if(t->HW1_policy_enable)
+        return -EINVAL;    
+
     t->HW1_policy_enable = true;
 
     return 0;

@@ -6,7 +6,20 @@
 
 
 //--------------------------------------------------
+typedef struct forbidden_log* forbidden_log_HW1;
+struct forbidden_activity_info{    //the struct that hold the info
+		int syscall_req_level;
+		int proc_level;
+		int time;
+	};
 
+struct forbidden_log{
+	struct forbidden_activity_info data;
+	forbidden_log_HW1 next;
+	forbidden_log_HW1 prev;
+
+};
+//--------------------------------------------------
 int enable_policy(pid_t pid, int size, int password){
 	int __res;
 	__asm__(
