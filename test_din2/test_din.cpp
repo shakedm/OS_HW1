@@ -76,24 +76,30 @@ int get_process_log_test() {
     int pid = getpid();
     // Filling the array with forbidden activities
     assert(enable_policy(pid, 10, 234123) == 0);
+    printf("help\n");
     assert(set_process_capabilities(pid, 0, 234123) == 0);
     assert(fork() == -1);
+    printf("help2\n");
     assert(sched_yield() == -1);
     assert(errno == EINVAL);
     assert(wait(NULL) == -1);
     assert(errno == EINVAL);
     assert(wait(NULL) == -1);
+    printf("help3\n");
     assert(errno == EINVAL);
     assert(get_process_log(pid, 3, buff) == 0);
+    printf("no chance\n");
     assert(buff[0].syscall_req_level == 2);
     assert(buff[1].syscall_req_level == 1);
     assert(buff[2].syscall_req_level == 1);
+    printf("say what...\n");
     assert(buff[0].proc_level == 0);
     assert(buff[1].proc_level == 0);
     assert(buff[2].proc_level == 0);
     assert(buff[0].time <= buff[1].time);
     assert(buff[1].time <= buff[2].time);
     // Checking get's error messages
+    printf("maybe?\n");
     assert(get_process_log(-1, 1, buff) == -1);
     assert(errno == ESRCH);
     assert(get_process_log(234123, 1, buff) == -1);
@@ -102,6 +108,7 @@ int get_process_log_test() {
     assert(errno == EINVAL);
     assert(get_process_log(pid, 2, buff) == -1);
     assert(errno == EINVAL);
+    printf("be positive Shahar\n");
     // Making sure that after disabling the process, that it's array/list is empty
     assert(disable_policy(pid, 234123) == 0);
     assert(get_process_log(pid, 1, buff) == -1);
