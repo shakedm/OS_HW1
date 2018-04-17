@@ -64,8 +64,8 @@ int add_to_log(int sysCall_thres)
 	current->last_log=newNode;
 	return 0;
 }
-void free_log(){
-	forbidden_log_HW1 ptr=head_log;
+void free_log(task_t* t){
+	forbidden_log_HW1 ptr=t->head_log;
 	forbidden_log_HW1 next=NULL;
 	while(ptr!=NULL){
 		next=ptr->next;
