@@ -6,7 +6,7 @@
 #include <linux/sched.h>
 #include <asm/uaccess.h>
 #include <linux/slab.h>
-#include <linux/current.h>
+#include <asm/current.h>
 
 // HW1 functions:
 int add_to_log(int sysCall_thres)
@@ -50,7 +50,7 @@ void free_log(task_t* t){
 }
 //HW1 functions end
 
-int enable_policy(pid_t pid,int size,int password){
+int sys_enable_policy(pid_t pid,int size,int password){
     if(pid<0 )
         return -ESRCH;
     if(size<0)
@@ -87,7 +87,7 @@ int sys_disable_policy(pid_t pid, int password){
 	return 0;
 }
 
-int set_process_capabilities(pid_t pid, int new_level, int password){
+int sys_set_process_capabilities(pid_t pid, int new_level, int password){
     if(pid<0)
         return -ESRCH;
     
@@ -100,11 +100,11 @@ int set_process_capabilities(pid_t pid, int new_level, int password){
         return -ESRCH;
     if(!t->HW1_policy_enable)
         return -EINVAL;
-    t->HW1_Privilege_Level=new_level;
+    t->HW1_Privileg_Level=new_level;
     return 0;
 }
 
-int get_process_log(pid_t pid, int size, struct forbidden_activity_info* user_mem){
+int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* user_mem){
     if(pid<0)
         return -ESRCH;
     if(size<0)
@@ -114,12 +114,13 @@ int get_process_log(pid_t pid, int size, struct forbidden_activity_info* user_me
         return -ESRCH; 
     if(size> HW1_count_log(t))//need to implement this func!!!
         return -EINVAL;
-    for(int i=0; i<size ; i++){
+        int i;
+    for(i=0; i<size ; i++){
         user_mem[i]=t->head_log->data;
         forbidden_log_HW1 next= t->head_log->next;
         kfree(t->head_log);
-        head_log = next;
-        head_log->prev=NULL;
+        t->head_log = next;
+        t->head_log->prev=NULL;
     }
     return 0;
 

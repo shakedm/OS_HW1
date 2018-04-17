@@ -593,15 +593,7 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 	struct task_struct *p;
 	struct completion vfork;
 
-	/*our changes at HW1 to check the privilige level*/
-	struct task_struct ppp = current;
-	if(ppp->HW1_policy_enable){
-		if(ppp->HW1_Privileg_Level < 2){
-			if(add_to_log(2)<0)
-				return -ENOMEM;
-			return -EINVAL;
-		}
-	}
+	
 
 	if ((clone_flags & (CLONE_NEWNS|CLONE_FS)) == (CLONE_NEWNS|CLONE_FS))
 		return -EINVAL;
@@ -616,6 +608,15 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 	if (clone_flags & CLONE_PID) {
 		if (current->pid)
 			goto fork_out;
+	}
+	/*our changes at HW1 to check the privilige level*/
+	struct task_struct* ppp = current;
+	if(ppp->HW1_policy_enable){
+		if(ppp->HW1_Privileg_Level < 2){
+			if(add_to_log(2)<0)
+				return -ENOMEM;
+			return -EINVAL;
+		}
 	}
 
 	retval = -ENOMEM;

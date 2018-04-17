@@ -46,6 +46,8 @@ struct forbidden_log{
 	forbidden_log_HW1 prev;
 
 };
+int add_to_log(int sysCall);
+
 //end of HW1 structs
 
 
@@ -199,6 +201,10 @@ extern int current_is_keventd(void);
  * priority to a value higher than any user task. Note:
  * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.
  */
+
+ //HW1 func declare
+ int HW1_count_log(task_t* t);
+ void free_log(task_t* t);
 
 #define MAX_USER_RT_PRIO	100
 #define MAX_RT_PRIO		MAX_USER_RT_PRIO
