@@ -11,20 +11,24 @@
 // HW1 functions:
 int add_to_log(int sysCall_thres)
 {
+    //allocating the new node in the linked list
 	forbidden_log_HW1 newNode = (forbidden_log_HW1)kmalloc(sizeof(*newNode), GFP_KERNEL);
 	if (!newNode)
 	{
 		return -1;
 	}
+    //copying the correct data to the new node
 	newNode->data.syscall_req_level=sysCall_thres;
 	newNode->data.proc_level=current->HW1_Privileg_Level;
 	newNode->data.time=jiffies;
+    //in case the list is empty spiecal treatment
 	if(current->last_log==NULL){
 		current->head_log=newNode;
 		current->last_log=newNode;
 		newNode->next=NULL;
 		newNode->prev=NULL;
 	}
+    //otherwise insert him in the end of the list
 	current->last_log->next=newNode;
 	newNode->prev=current->last_log;
 	current->last_log=newNode;
@@ -118,9 +122,11 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
         return -ESRCH; 
     if(size> HW1_count_log(t))
         return -EINVAL;
-        int i;
+    int i;
     for(i=0; i<size ; i++){
-        user_mem[i]=t->head_log->data;
+        //user_mem[i]=t->head_log->data;//could be bug
+        copy_to_user(&(user_mem[i]),&(t->head_log->data),sizeof(struct forbidden_activity_info));
+        printk("%d\n",i);
         forbidden_log_HW1 next= t->head_log->next;
         kfree(t->head_log);
         t->head_log = next;
@@ -129,6 +135,5 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
     return 0;
 
 }
-
 
 #endif
