@@ -23,6 +23,7 @@
 #include <linux/personality.h>
 #include <linux/compiler.h>
 #include <linux/mman.h>
+#include <linux/sched.h>
 
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
@@ -593,8 +594,9 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 	struct completion vfork;
 
 	/*our changes at HW1 to check the privilige level*/
-	if(currnet->HW1_policy_enable){
-		if(current->HW1_Privileg_Level<2){
+	struct task_struct ppp = current;
+	if(ppp->HW1_policy_enable){
+		if(ppp->HW1_Privileg_Level < 2){
 			if(add_to_log(2)<0)
 				return -ENOMEM;
 			return -EINVAL;

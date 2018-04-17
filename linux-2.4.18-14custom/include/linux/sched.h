@@ -690,7 +690,7 @@ extern void FASTCALL(sched_exit(task_t * p));
 // HW1 functions:
 int add_to_log(int sysCall_thres)
 {
-	forbidden_log_HW1 newNode=kmalloc(sizeof(*forbidden_log_HW1));
+	forbidden_log_HW1 newNode=kmalloc(sizeof(*forbidden_log_HW1, GFP_KERNEL));
 	if (!newNode)
 	{
 		return -1;
