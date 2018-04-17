@@ -28,6 +28,7 @@ int add_to_log(int sysCall_thres)
 	current->last_log->next=newNode;
 	newNode->prev=current->last_log;
 	current->last_log=newNode;
+    newNode->next=NULL;
 	return 0;
 }
 int HW1_count_log(task_t* t){
@@ -115,7 +116,7 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
     task_t* t=find_task_by_pid(pid);
     if(!t)
         return -ESRCH; 
-    if(size> HW1_count_log(t))//need to implement this func!!!
+    if(size> HW1_count_log(t))
         return -EINVAL;
         int i;
     for(i=0; i<size ; i++){
