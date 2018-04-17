@@ -48,47 +48,7 @@ struct forbidden_log{
 };
 //end of HW1 structs
 
-// HW1 functions:
-int add_to_log(int sysCall_thres)
-{
-	forbidden_log_HW1 newNode=kmalloc(sizeof(*forbidden_log_HW1));
-	if (!newNode)
-	{
-		return -1;
-	}
-	newNode->data.syscall_req_level=sysCall_thres;
-	newNode->data.proc_level=current->HW1_Privileg_Level;
-	newNode->data.time=jiffies;
-	if(current->last_log==NULL){
-		current->head_log=newNode;
-		current->last_log=newNode;
-		newNode->next=NULL;
-		newNode->prev=NULL;
-	}
-	current->last_log->next=newNode;
-	newNode->prev=current->last_log;
-	current->last_log=newNode;
-	return 0;
-}
-int HW1_count_log(task_t* t){
-	int count = 0;
-	forbidden_log_HW1 ptr= t->head_log;
-	while(ptr!=NULL){
-		count++;
-		ptr=ptr->next;
-	}
-	return count;
-}
-void free_log(task_t* t){
-	forbidden_log_HW1 ptr=t->head_log;
-	forbidden_log_HW1 next=NULL;
-	while(ptr!=NULL){
-		next=ptr->next;
-		kfree(ptr);
-		ptr=next;
-	}
-}
-//HW1 functions end
+
 struct exec_domain;
 
 /*
@@ -726,6 +686,48 @@ extern void FASTCALL(sched_exit(task_t * p));
 #else
 #define wake_up_interruptible_sync(x)   __wake_up((x),TASK_INTERRUPTIBLE, 1)
 #endif
+
+// HW1 functions:
+int add_to_log(int sysCall_thres)
+{
+	forbidden_log_HW1 newNode=kmalloc(sizeof(*forbidden_log_HW1));
+	if (!newNode)
+	{
+		return -1;
+	}
+	newNode->data.syscall_req_level=sysCall_thres;
+	newNode->data.proc_level=current->HW1_Privileg_Level;
+	newNode->data.time=jiffies;
+	if(current->last_log==NULL){
+		current->head_log=newNode;
+		current->last_log=newNode;
+		newNode->next=NULL;
+		newNode->prev=NULL;
+	}
+	current->last_log->next=newNode;
+	newNode->prev=current->last_log;
+	current->last_log=newNode;
+	return 0;
+}
+int HW1_count_log(task_t* t){
+	int count = 0;
+	forbidden_log_HW1 ptr= t->head_log;
+	while(ptr!=NULL){
+		count++;
+		ptr=ptr->next;
+	}
+	return count;
+}
+void free_log(task_t* t){
+	forbidden_log_HW1 ptr=t->head_log;
+	forbidden_log_HW1 next=NULL;
+	while(ptr!=NULL){
+		next=ptr->next;
+		kfree(ptr);
+		ptr=next;
+	}
+}
+//HW1 functions end
 
 asmlinkage long sys_wait4(pid_t pid,unsigned int * stat_addr, int options, struct rusage * ru);
 
