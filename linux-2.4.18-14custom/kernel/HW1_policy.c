@@ -5,7 +5,50 @@
 #include <linux/errno.h>
 #include <linux/sched.h>
 #include <asm/uaccess.h>
+#include <linux/slab.h>
+#include <linux/current.h>
 
+// HW1 functions:
+int add_to_log(int sysCall_thres)
+{
+	forbidden_log_HW1 newNode = (forbidden_log_HW1)kmalloc(sizeof(*newNode), GFP_KERNEL);
+	if (!newNode)
+	{
+		return -1;
+	}
+	newNode->data.syscall_req_level=sysCall_thres;
+	newNode->data.proc_level=current->HW1_Privileg_Level;
+	newNode->data.time=jiffies;
+	if(current->last_log==NULL){
+		current->head_log=newNode;
+		current->last_log=newNode;
+		newNode->next=NULL;
+		newNode->prev=NULL;
+	}
+	current->last_log->next=newNode;
+	newNode->prev=current->last_log;
+	current->last_log=newNode;
+	return 0;
+}
+int HW1_count_log(task_t* t){
+	int count = 0;
+	forbidden_log_HW1 ptr= t->head_log;
+	while(ptr!=NULL){
+		count++;
+		ptr=ptr->next;
+	}
+	return count;
+}
+void free_log(task_t* t){
+	forbidden_log_HW1 ptr=t->head_log;
+	forbidden_log_HW1 next=NULL;
+	while(ptr!=NULL){
+		next=ptr->next;
+		kfree(ptr);
+		ptr=next;
+	}
+}
+//HW1 functions end
 
 int enable_policy(pid_t pid,int size,int password){
     if(pid<0 )
