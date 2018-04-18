@@ -111,7 +111,9 @@ int get_process_log_test() {
     printf("be positive Shahar\n");
     // Making sure that after disabling the process, that it's array/list is empty
     assert(disable_policy(pid, 234123) == 0);
+    printf("here\n");
     assert(get_process_log(pid, 1, buff) == -1);
+    printf("indeed\n");
     assert(errno == EINVAL);
     assert(enable_policy(pid, 10, 234123) == 0);
     assert(get_process_log(pid, 1, buff) == -1);

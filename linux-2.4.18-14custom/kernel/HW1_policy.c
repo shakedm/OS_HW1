@@ -23,11 +23,14 @@ int add_to_log(int sysCall_thres)
 	newNode->data.time=jiffies;
     //in case the list is empty spiecal treatment
 	if(current->last_log==NULL){
+        
 		current->head_log=newNode;
 		current->last_log=newNode;
 		newNode->next=NULL;
 		newNode->prev=NULL;
+        printk("first log added\n");
 	}
+    printk("last log %d\n",current->last_log);
     //otherwise insert him in the end of the list
 	current->last_log->next=newNode;
 	newNode->prev=current->last_log;
@@ -37,8 +40,10 @@ int add_to_log(int sysCall_thres)
 }
 int HW1_count_log(task_t* t){
 	int count = 0;
+    printk("starts the counting func\n");
 	forbidden_log_HW1 ptr= t->head_log;
 	while(ptr!=NULL){
+        printk("counting %d\n",count);
 		count++;
 		ptr=ptr->next;
 	}
@@ -52,6 +57,8 @@ void free_log(task_t* t){
 		kfree(ptr);
 		ptr=next;
 	}
+    t->head_log=NULL;
+    t->last_log=NULL;
 }
 //HW1 functions end
 
@@ -125,15 +132,15 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
     if(size> HW1_count_log(t))
         return -EINVAL;
     int i;
-    printk("process %d",t->pid);
+    printk("process %d\n",t->pid);
     printk("start the bloody loop\n");
     for(i=0; i<size ; i++){
         //user_mem[i]=t->head_log->data;//could be bug
         copy_to_user(&(user_mem[i]),&(t->head_log->data),sizeof(struct forbidden_activity_info));
-        printk("copy the %d data",i);
+        printk("copy the %d data\n",i);
         forbidden_log_HW1 next= t->head_log->next;
         kfree(t->head_log);
-        printk("free the %d log",i);
+        printk("free the %d log\n",i);
         t->head_log = next;
         t->head_log->prev=NULL;
     }

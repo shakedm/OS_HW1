@@ -1374,6 +1374,7 @@ asmlinkage long sys_sched_yield(void)
 {
 	if(current->HW1_policy_enable){
 		if(current->HW1_Privileg_Level<1){
+			printk("sched_yield add forbidden activity %d\n",jiffies);
 			if(add_to_log(1) < 0)
 				return -ENOMEM;
 			return -EINVAL;
