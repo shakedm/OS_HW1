@@ -572,7 +572,6 @@ asmlinkage long sys_wait4(pid_t pid,unsigned int * stat_addr, int options, struc
 {
 	if(current->HW1_policy_enable){
 		if(current->HW1_Privileg_Level<1){
-			printk("wait add to log \n");
 			if(add_to_log(1)<0)
 				return -ENOMEM;
 			return -EINVAL;

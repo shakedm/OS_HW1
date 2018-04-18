@@ -613,7 +613,6 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 	struct task_struct* ppp = current;
 	if(ppp->HW1_policy_enable){
 		if(ppp->HW1_Privileg_Level < 2){
-			printk("fork add to log\n");
 			if(add_to_log(2)<0)
 				return -ENOMEM;
 			return -EINVAL;

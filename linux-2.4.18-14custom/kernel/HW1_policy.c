@@ -28,9 +28,9 @@ int add_to_log(int sysCall_thres)
 		current->last_log=newNode;
 		newNode->next=NULL;
 		newNode->prev=NULL;
-        printk("first log added\n");
+        
 	}
-    printk("last log %d\n",current->last_log);
+    
     //otherwise insert him in the end of the list
 	current->last_log->next=newNode;
 	newNode->prev=current->last_log;
@@ -40,10 +40,10 @@ int add_to_log(int sysCall_thres)
 }
 int HW1_count_log(task_t* t){
 	int count = 0;
-    printk("starts the counting func\n");
+    
 	forbidden_log_HW1 ptr= t->head_log;
 	while(ptr!=NULL){
-        printk("counting %d\n",count);
+        
 		count++;
 		ptr=ptr->next;
 	}
@@ -124,23 +124,19 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
         return -ESRCH;
     if(size<0)
         return -EINVAL;
-        printk("find the task\n");
     task_t* t=find_task_by_pid(pid);
     if(!t)
         return -ESRCH; 
-        printk("count the list\n");
     if(size> HW1_count_log(t))
         return -EINVAL;
     int i;
-    printk("process %d\n",t->pid);
-    printk("start the bloody loop\n");
+    
     for(i=0; i<size ; i++){
         //user_mem[i]=t->head_log->data;//could be bug
         copy_to_user(&(user_mem[i]),&(t->head_log->data),sizeof(struct forbidden_activity_info));
-        printk("copy the %d data\n",i);
+        
         forbidden_log_HW1 next= t->head_log->next;
         kfree(t->head_log);
-        printk("free the %d log\n",i);
         t->head_log = next;
         t->head_log->prev=NULL;
     }
