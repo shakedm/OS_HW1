@@ -627,6 +627,7 @@ int do_fork(unsigned long clone_flags, unsigned long stack_start,
 	*p = *current;
 	//HW1 fields that are now set for default values in the son task_struct
 	p->head_log = NULL;
+	p->last_log = NULL;
 	p->HW1_policy_enable = false;
 	p->HW1_Privileg_Level = 2;
 	//end of HW1 fields
