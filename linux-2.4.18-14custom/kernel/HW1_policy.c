@@ -140,10 +140,11 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
         forbidden_log_HW1 next= t->head_log->next;
         kfree(t->head_log);
         t->head_log = next;
-        t->head_log->prev=NULL;
+        if(t->head_log != NULL)
+            t->head_log->prev=NULL;
     }
     printk("i is %d \n",i);
-    if(i==num_log-1){
+    if(i==num_log){
         t->head_log=NULL;
         t->last_log=NULL;
     }

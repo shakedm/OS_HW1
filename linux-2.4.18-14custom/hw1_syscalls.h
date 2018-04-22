@@ -3,6 +3,7 @@
 
 #include <errno.h>
 #include <termios.h>
+#include <sys/types.h>
 
 
 //--------------------------------------------------
