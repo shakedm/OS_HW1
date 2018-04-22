@@ -140,6 +140,10 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
         t->head_log = next;
         t->head_log->prev=NULL;
     }
+    if(i==size){
+        t->head_log=NULL;
+        t->last_log=NULL;
+    }
     return 0;
 
 }
