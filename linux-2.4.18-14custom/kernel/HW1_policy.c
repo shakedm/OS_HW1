@@ -128,7 +128,6 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
     if(!t)
         return -ESRCH; 
     int num_log = HW1_count_log(t);    
-    printk("log is %d size is %d\n",num_log ,size);
     if(size > num_log )
         return -EINVAL;
     int i;
@@ -143,7 +142,6 @@ int sys_get_process_log(pid_t pid, int size, struct forbidden_activity_info* use
         if(t->head_log != NULL)
             t->head_log->prev=NULL;
     }
-    printk("i is %d \n",i);
     if(i==num_log){
         t->head_log=NULL;
         t->last_log=NULL;
